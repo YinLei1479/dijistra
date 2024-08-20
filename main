@@ -1,0 +1,86 @@
+//定义一些全局变量
+#include<stdio.h>
+#define m 5201314
+int A[7][7]={{m,4,6,6,m,m,m},
+             {m,m,1,m,7,m,m},
+             {m,m,m,m,6,4,m},
+             {m,m,2,m,m,5,m},
+             {m,m,m,m,m,m,6},
+             {m,m,m,m,1,m,8},
+             {m,m,m,m,m,m,m}};
+int dist[7],path[7],mark[7]={0};
+//初始化数组模块
+void Initial(){
+	int i;
+	for(i=0;i<7;i++)
+	{
+		dist[i]=m;
+		path[i]=-1;
+	}
+}
+//寻找dist[]数组中距离最小的且在U中的顶点
+int Min(){
+	int l=0,i;
+	while(mark[l]!=0)
+		l++;
+	for(i=0;i<7;i++)
+		if(mark[i]==0&&dist[l]>dist[i])
+			l=i;
+	return l;
+}
+//不断地更新迭代模块
+void Update(int start,int last){
+	int number=0,k,i;
+	k=start;
+	dist[k]=0;
+	number++;
+	while(number<=7)      //终止条件
+	{
+		for(i=0;i<7;i++)  //整体dist[]更新一下
+		{
+			if(mark[i]==0)
+			{
+				if(dist[i]>dist[k]+A[k][i])  
+				{//比较通过k点的距离和dist[]中的距离
+					dist[i]=dist[k]+A[k][i];
+					path[i]=k;
+				}
+			} 
+	    }
+		k=Min();
+		number++;
+		mark[k]=1;
+	 }
+}
+//控制格式化输出
+void Output(int start,int last){
+	int k,i;
+	int res[20],n=0;
+	res[n++]=last;
+	k=last;
+	while(k!=start)
+	{
+		res[n++]=path[k];
+		k=path[k];
+	}
+	printf("路径为:");
+	for(i=n-1;i>=0;i--)
+	{
+		if(i==n-1)
+			printf("%d",res[i]);
+		else
+			printf("->%d",res[i]);
+	}
+}
+//主函数进行总体调用
+int main(){
+	int k,i,start,last;
+	Initial();
+	printf("起点:");
+	scanf("%d",&start);
+	printf("终点:");
+	scanf("%d",&last);
+	Update(start,last);
+	Output(start,last);
+	return 0;
+}
