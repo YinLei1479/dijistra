@@ -1,3 +1,5 @@
 # Dijistra
-Dijistra路由决策代码
-用作简单拓扑环境下路由
+
+Dijistra routing decision code
+
+Route in simple topology environment
